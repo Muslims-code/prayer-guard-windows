@@ -239,10 +239,10 @@ packages:
     dependency: "direct main"
     description:
       name: salat
-      sha256: "04c4b0adf73c1a50a45a4f8dd9fe2d6abad5eb47f43f6247ba91c53f6e809a2d"
+      sha256: "22c7b9c1ff78a8145febb2ed44faf7ce88c197aadd11cd81a47f5a801ff70213"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.4"
   sky_engine:
     dependency: transitive
     description: flutter

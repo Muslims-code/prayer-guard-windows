@@ -20,7 +20,7 @@ class Prayers {
     required String timezone,
     required double longitude,
     required double latitude,
-    required CalculationMethod method,
+    CalculationMethod method = CalculationMethod.MWL,
   })  : _latitude = latitude,
         _longitude = longitude,
         _timezone = timezone,
@@ -94,6 +94,15 @@ class Prayers {
       'asr': asr,
       'maghrib': maghrib,
       'isha': isha,
+    };
+  }
+    Map<String, DateTime> timesToMapAr() {
+    return <String, DateTime>{
+      'الفجر': fajr,
+      'الظهر': dhuhr,
+      'العصر': asr,
+      'المغرب': maghrib,
+      'العشاء': isha,
     };
   }
 }

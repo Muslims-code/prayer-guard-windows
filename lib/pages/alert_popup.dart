@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
 import 'dart:async';
 import 'dart:io';
 import 'prayertimes_settings.dart';
@@ -10,9 +9,7 @@ import 'package:prayer_guard_desktop/widgets/widgets.dart';
 import '../constants.dart';
 
 class AlertPopUp extends StatefulWidget {
-  const AlertPopUp({super.key, required this.title});
-
-  final String title;
+  const AlertPopUp({super.key});
 
   @override
   State<AlertPopUp> createState() => _AlertPopUpState();
@@ -26,7 +23,6 @@ class _AlertPopUpState extends State<AlertPopUp> {
   final AppWindow _appWindow = AppWindow();
   final SystemTray _systemTray = SystemTray();
   final Menu _menuMain = Menu();
-  final GeolocatorPlatform geolocatorWindows = GeolocatorPlatform.instance;
 
   @override
   void initState() {
@@ -40,7 +36,6 @@ class _AlertPopUpState extends State<AlertPopUp> {
   }
 
   Future<void> initSystemTray() async {
-    await geolocatorWindows.getCurrentPosition();
     await _systemTray.initSystemTray(iconPath: getTrayImagePath('app_icon'));
     _systemTray.setTitle("Prayer Guard");
     _systemTray.setToolTip("protecting your prayers...");
@@ -73,7 +68,7 @@ class _AlertPopUpState extends State<AlertPopUp> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 CloseWindowButton(
                   colors: closeButtonColors,
@@ -92,7 +87,10 @@ class _AlertPopUpState extends State<AlertPopUp> {
             ),
             Row(
               children: [
-                GreenButton(text: 'إيقاف تشغيل الكمبيوتر',onPressed: (){},),
+                GreenButton(
+                  text: 'إيقاف تشغيل الكمبيوتر',
+                  onPressed: () {},
+                ),
                 BlueIconButton(
                   icon: Icons.list,
                   text: "الصلوات",
@@ -113,7 +111,6 @@ class _AlertPopUpState extends State<AlertPopUp> {
                             builder: (context) => const PrayerTimeNSettings()));
                   },
                 ),
-                
               ],
             )
           ],
@@ -122,4 +119,3 @@ class _AlertPopUpState extends State<AlertPopUp> {
     );
   }
 }
-

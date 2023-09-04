@@ -1,9 +1,11 @@
 import 'pages/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-
+import 'package:timezone/data/latest.dart' as tz;
 void main() {
   runApp(const MyApp());
+    tz.initializeTimeZones();
+
   doWhenWindowReady(() {
     final win = appWindow;
     const initialSize = Size(450, 150);
@@ -21,11 +23,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'prayer guard',
       theme: ThemeData(useMaterial3: true, fontFamily: "Tajawal"),
-      home: const AlertPopUp(title: 'Prayer Guard'),
+      home: const AlertPopUp(),
     );
   }
 }
