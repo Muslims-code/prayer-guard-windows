@@ -8,14 +8,14 @@ import 'package:salat/salat.dart';
 import '../constants.dart';
 import '../services/services.dart';
 
-class PrayerTimeNSettings extends StatefulWidget {
-  const PrayerTimeNSettings({super.key});
+class PrayersList extends StatefulWidget {
+  const PrayersList({super.key});
 
   @override
-  State<PrayerTimeNSettings> createState() => _PrayerTimeNSettingsState();
+  State<PrayersList> createState() => _PrayersListState();
 }
 
-class _PrayerTimeNSettingsState extends State<PrayerTimeNSettings> {
+class _PrayersListState extends State<PrayersList> {
   final closeButtonColors = WindowButtonColors(
       mouseOver: const Color(0xFFD32F2F),
       mouseDown: const Color(0xFFB71C1C),

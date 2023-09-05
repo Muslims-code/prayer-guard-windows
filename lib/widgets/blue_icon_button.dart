@@ -27,12 +27,7 @@ class BlueIconButton extends StatelessWidget {
             foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
             backgroundColor: MaterialStateProperty.all<Color>(kDeepBlue),
           ),
-          onPressed: () {
-            Navigator.push(
-                context,
-                CupertinoPageRoute(
-                    builder: (context) => const PrayerTimeNSettings()));
-          },
+          onPressed: onPressed,
           child: Row(
             children: [
               Icon(
@@ -43,7 +38,7 @@ class BlueIconButton extends StatelessWidget {
               const SizedBox(
                 width: 5,
               ),
-               Text(text),
+              Text(text),
             ],
           )),
     );

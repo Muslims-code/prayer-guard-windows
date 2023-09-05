@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:prayer_guard_desktop/pages/prayers_settings.dart';
 import 'dart:async';
 import 'dart:io';
-import 'prayertimes_settings.dart';
+import 'prayers_list.dart';
 import 'package:system_tray/system_tray.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/cupertino.dart';
@@ -98,7 +99,7 @@ class _AlertPopUpState extends State<AlertPopUp> {
                     Navigator.push(
                         context,
                         CupertinoPageRoute(
-                            builder: (context) => const PrayerTimeNSettings()));
+                            builder: (context) => const PrayersList()));
                   },
                 ),
                 BlueIconButton(
@@ -108,7 +109,7 @@ class _AlertPopUpState extends State<AlertPopUp> {
                     Navigator.push(
                         context,
                         CupertinoPageRoute(
-                            builder: (context) => const PrayerTimeNSettings()));
+                            builder: (context) => const PrayersSettings()));
                   },
                 ),
               ],
