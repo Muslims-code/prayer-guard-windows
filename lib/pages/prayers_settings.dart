@@ -1,12 +1,8 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
-import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
-import 'package:intl/intl.dart' as ntl;
-import 'package:salat/salat.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../constants.dart';
-import '../services/services.dart';
+import '../cubits/settings_cubit.dart';
 
 class PrayersSettings extends StatefulWidget {
   const PrayersSettings({super.key});
@@ -36,47 +32,18 @@ class _PrayersSettingsState extends State<PrayersSettings> {
                 child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     width: 300,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text("تنبيه قبل الأذان ب:"),
-                          Container(
-                            height: 25,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(3)),
-                            child: Material(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(3)),
-                              color: kDeepBlue,
-                              child: InkWell(
-                                splashColor: kDeepSplashBlue,
-                                onTap: () {
-                                  Scaffold.of(scaffoldContext).showBottomSheet(
-                                      (context) => Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(3)),
-                                            height: 100,
-                                            child: ListView.builder(itemBuilder: (context,index){
-
-                                            }),
-                                          ),
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              topRight: Radius.circular(10))),
-                                      backgroundColor: kDeepSplashBlue);
-                                },
-                                child: const Center(
-                                  child: Text(
-                                    "5 دقائق",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        ])),
+                    child: InputDropDown(
+                      scaffoldContext: scaffoldContext,
+                      label: "تنبيه قبل الأذان ب:",
+                      elements: [
+                        "5 دقائق",
+                        "10 دقائق",
+                        "15 دقائق",
+                        "20 دقائق",
+                        "25 دقائق",
+                        "30 دقائق",
+                      ],
+                    )),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,5 +69,78 @@ class _PrayersSettingsState extends State<PrayersSettings> {
         }),
       ),
     );
+  }
+}
+
+class InputDropDown extends StatelessWidget {
+  final BuildContext scaffoldContext;
+  final String label;
+  final List<String> elements;
+  const InputDropDown({
+    super.key,
+    required this.label,
+    required this.scaffoldContext,
+    required this.elements,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text(label),
+      Container(
+        height: 25,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(6)),
+        child: Material(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+          color: kDeepBlue,
+          child: InkWell(
+            splashColor: kDeepSplashBlue,
+            onTap: () {
+              Scaffold.of(scaffoldContext).showBottomSheet(
+                  (context) => Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(3)),
+                    height: 100,
+                    child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        return Center(
+                          child: ListTile(
+                            visualDensity: const VisualDensity(
+                                vertical: -4), // to compact
+                            onTap: () {
+                              context
+                                  .read<SettingsCubit>()
+                                  .setAlarmBefore(int.parse(
+                                      elements[index]
+                                          .replaceAll("دقائق", "")
+                                          .replaceAll(" ", "")));
+                              Navigator.pop(context);
+                            },
+                            title: Text(
+                              elements[index],
+                              style: const TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        );
+                      },
+                      itemCount: elements.length,
+                    ),
+                  ),
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10))),
+                  backgroundColor: Colors.white);
+            },
+            child: Center(
+              child: Text(
+                "${context.watch<SettingsCubit>().state.alarmBefore} دقائق",
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ),
+      )
+    ]);
   }
 }
