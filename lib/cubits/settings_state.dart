@@ -2,18 +2,18 @@
 import 'package:equatable/equatable.dart';
 
 class SettingsState extends Equatable {
-  final String? timezone;
-  final String? calculationMethod;
-  final int? alarmBefore;
+  final String timezone;
+  final String calculationMethod;
+  final int alarmBefore;
 
   const SettingsState({
-    this.timezone ,
-    this.calculationMethod ,
+    this.timezone = "Africa/Casablanca" ,
+    this.calculationMethod = "MWL" ,
     this.alarmBefore = 5,
   });
 
   @override
-  List<Object?> get props => [timezone, calculationMethod, alarmBefore];
+  List<Object> get props => [timezone, calculationMethod, alarmBefore];
 
   SettingsState copyWith({
     String? timezone,

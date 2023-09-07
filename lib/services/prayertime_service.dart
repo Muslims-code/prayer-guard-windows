@@ -2,7 +2,6 @@
 
 // import 'package:geolocator/geolocator.dart';
 import 'package:salat/salat.dart';
-import 'package:timezone/data/latest.dart' as tz;
 
 class Prayers {
   final DateTime _date;

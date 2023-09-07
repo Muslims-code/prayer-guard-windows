@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:timezone/timezone.dart';
 
 import 'cubits/settings_cubit.dart';
 import 'pages/pages.dart';
@@ -8,8 +9,6 @@ import 'package:timezone/data/latest.dart' as tz;
 
 void main() {
   runApp(const MyApp());
-  tz.initializeTimeZones();
-
   doWhenWindowReady(() {
     final win = appWindow;
     const initialSize = Size(450, 150);
