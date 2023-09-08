@@ -5,7 +5,6 @@ import 'package:salat/salat.dart';
 import 'package:timezone/timezone.dart';
 import '../constants.dart';
 
-
 import '../cubits/settings_cubit.dart';
 
 class PrayersSettings extends StatefulWidget {
@@ -22,52 +21,23 @@ class _PrayersSettingsState extends State<PrayersSettings> {
       iconNormal: Colors.black,
       normal: const Color(0xffC0D1DD));
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final lst = timeZoneDatabase.locations;
+    print(lst);
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: kShallowBlue,
         body: Builder(builder: (BuildContext scaffoldContext) {
-          return Stack(
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  width: 300,
-                  child: Column(
-                    children: [
-                      InputDropDown(
-                        dropIndex: 0,
-                        scaffoldContext: scaffoldContext,
-                        label: "تنبيه قبل الأذان ب:",
-                        elements: [
-                          "5 دقائق",
-                          "10 دقائق",
-                          "15 دقائق",
-                          "20 دقائق",
-                          "25 دقائق",
-                          "30 دقائق",
-                        ],
-                      ),
-                      InputDropDown(
-                        dropIndex: 1,
-                        scaffoldContext: scaffoldContext,
-                        label: "طريقة الحساب:",
-                        elements: CalculationMethod.values
-                            .map((e) => e.toString().split(".")[1])
-                            .toList(),
-                      ),
-                      InputDropDown(
-                        dropIndex: 2,
-                        scaffoldContext: scaffoldContext,
-                        label: "التوقيت المحلي:",
-                        elements:   timeZoneDatabase.locations.entries.map((e) => e.key).toList(),
-                      )
-                    ],
-                  ),
-                ),
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,6 +56,60 @@ class _PrayersSettingsState extends State<PrayersSettings> {
                         Icons.arrow_forward_rounded,
                       )),
                 ],
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                width: 440,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
+                      children: [
+                        InputDropDown(
+                          dropIndex: 0,
+                          scaffoldContext: scaffoldContext,
+                          label: "تنبيه قبل الأذان ب:",
+                          elements: const [
+                            "5 دقائق",
+                            "10 دقائق",
+                            "15 دقيقة",
+                            "20 دقيقة",
+                            "25 دقيقة",
+                            "30 دقيقة",
+                          ],
+                        ),
+                        InputDropDown(
+                          dropIndex: 1,
+                          scaffoldContext: scaffoldContext,
+                          label: "طريقة الحساب:",
+                          elements: CalculationMethod.values
+                              .map((e) => e.toString().split(".")[1])
+                              .toList(),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        InputDropDown(
+                          dropIndex: 2,
+                          scaffoldContext: scaffoldContext,
+                          label: "التوقيت المحلي:",
+                          elements: timeZoneDatabase.locations.entries.map((e) {
+                            return e.key;
+                          }).toList(),
+                        ),
+                        InputDropDown(
+                          dropIndex: 3,
+                          scaffoldContext: scaffoldContext,
+                          label: " طريقة حساب العصر:",
+                          elements: AsrMethod.values
+                              .map((e) => e.toString().split(".")[1])
+                              .toList(),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
             ],
           );
@@ -110,22 +134,29 @@ class InputDropDown extends StatelessWidget {
 
   String currentInput(BuildContext context) {
     if (dropIndex == 0) {
-      return "${context.watch<SettingsCubit>().state.alarmBefore} دقائق";
+      final alarmBefore = context.watch<SettingsCubit>().state.alarmBefore;
+      return "${alarmBefore} ${alarmBefore > 10 ? "دقيقة" : "دقائق"}";
     }
     if (dropIndex == 1) {
       return context.watch<SettingsCubit>().state.calculationMethod;
-    } else {
+    }
+    if (dropIndex == 2) {
       return context.watch<SettingsCubit>().state.timezone;
+    } else {
+      return context.watch<SettingsCubit>().state.asrMethod;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    print(elements);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(label),
+      Text(
+        label,
+        style: TextStyle(fontSize: 12),
+      ),
       Container(
-        height: 25,
+        height: 20,
+        width: 200,
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(6)),
         child: Material(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
@@ -151,6 +182,7 @@ class InputDropDown extends StatelessWidget {
                                         .setAlarmBefore(int.parse(
                                             elements[index]
                                                 .replaceAll("دقائق", "")
+                                                .replaceAll("دقيقة", "")
                                                 .replaceAll(" ", "")));
                                   }
                                   if (dropIndex == 1) {
@@ -164,7 +196,11 @@ class InputDropDown extends StatelessWidget {
                                         .read<SettingsCubit>()
                                         .setTimezoneMethod(elements[index]);
                                   }
-
+                                  if (dropIndex == 3) {
+                                    context
+                                        .read<SettingsCubit>()
+                                        .setAsrMethod(elements[index]);
+                                  }
                                   Navigator.pop(context);
                                 },
                                 title: Text(

@@ -82,7 +82,7 @@ class _PrayersListState extends State<PrayersList> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.arrow_forward_rounded,
                     )),
               ],
