@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:timezone/timezone.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'cubits/settings_cubit.dart';
 import 'pages/pages.dart';
@@ -7,7 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final path = Directory((await getApplicationDocumentsDirectory()).path + "/prayer_guard");
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: path ,
+  );
   runApp(const MyApp());
   tz.initializeTimeZones();
   doWhenWindowReady(() {

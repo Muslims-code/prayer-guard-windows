@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 
 class SettingsState extends Equatable {
@@ -35,4 +37,28 @@ class SettingsState extends Equatable {
       alarmBefore: alarmBefore ?? this.alarmBefore,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'timezone': timezone,
+      'calculationMethod': calculationMethod,
+      'asrMethod': asrMethod,
+      'alarmBefore': alarmBefore,
+      'isAutoShutdown': isAutoShutdown,
+    };
+  }
+
+  factory SettingsState.fromMap(Map<String, dynamic> map) {
+    return SettingsState(
+      timezone: map['timezone'] as String,
+      calculationMethod: map['calculationMethod'] as String,
+      asrMethod: map['asrMethod'] as String,
+      alarmBefore: map['alarmBefore'] as int,
+      isAutoShutdown: map['isAutoShutdown'] as bool,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory SettingsState.fromJson(String source) => SettingsState.fromMap(json.decode(source) as Map<String, dynamic>);
 }
