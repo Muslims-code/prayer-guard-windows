@@ -28,15 +28,14 @@ class _PrayersSettingsState extends State<PrayersSettings> {
 
   @override
   Widget build(BuildContext context) {
-    final lst = timeZoneDatabase.locations;
-    print(lst);
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: kShallowBlue,
         body: Builder(builder: (BuildContext scaffoldContext) {
           return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,6 +110,19 @@ class _PrayersSettingsState extends State<PrayersSettings> {
                   ],
                 ),
               ),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Checkbox(
+                    checkColor: Colors.white,
+                    fillColor: MaterialStateProperty.all(kDeepBlue),
+                    value: context.watch<SettingsCubit>().state.isAutoShutdown,
+                    onChanged: (v) {
+                      context.read<SettingsCubit>().setIsAutoShutdown(v!);
+                    }),
+                Text(
+                  "تفعيل الإيقاف التلقائي للحاسوب",
+                  style: const TextStyle(fontSize: 12),
+                ),
+              ])
             ],
           );
         }),
@@ -186,7 +198,6 @@ class InputDropDown extends StatelessWidget {
                                                 .replaceAll(" ", "")));
                                   }
                                   if (dropIndex == 1) {
-                                    print(elements[index]);
                                     context
                                         .read<SettingsCubit>()
                                         .setCalculationMethod(elements[index]);

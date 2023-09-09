@@ -72,6 +72,7 @@ class _AlertPopUpState extends State<AlertPopUp> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
+              
               children: [
                 CloseWindowButton(
                   colors: closeButtonColors,

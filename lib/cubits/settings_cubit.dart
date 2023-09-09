@@ -12,6 +12,10 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   void setAlarmBefore(int alarmBefore) =>
       emit(state.copyWith(alarmBefore: alarmBefore));
+
   void setAsrMethod(String asrMethod) =>
       emit(state.copyWith(asrMethod: asrMethod));
+
+  void setIsAutoShutdown(bool isAutoShutdown) =>
+      emit(state.copyWith(isAutoShutdown: isAutoShutdown));
 }
