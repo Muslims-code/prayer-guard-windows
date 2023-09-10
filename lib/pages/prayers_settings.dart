@@ -22,7 +22,6 @@ class _PrayersSettingsState extends State<PrayersSettings> {
       normal: const Color(0xffC0D1DD));
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -131,12 +130,12 @@ class _PrayersSettingsState extends State<PrayersSettings> {
   }
 }
 
-class InputDropDown extends StatelessWidget {
+class InputDropDown extends StatefulWidget {
   final BuildContext scaffoldContext;
   final String label;
   final List<String> elements;
   final int dropIndex;
-  const InputDropDown({
+  InputDropDown({
     super.key,
     required this.label,
     required this.dropIndex,
@@ -144,26 +143,39 @@ class InputDropDown extends StatelessWidget {
     required this.elements,
   });
 
+  @override
+  State<InputDropDown> createState() => _InputDropDownState();
+}
+
+class _InputDropDownState extends State<InputDropDown> {
   String currentInput(BuildContext context) {
-    if (dropIndex == 0) {
+    if (widget.dropIndex == 0) {
       final alarmBefore = context.watch<SettingsCubit>().state.alarmBefore;
-      return "${alarmBefore} ${alarmBefore > 10 ? "دقيقة" : "دقائق"}";
+      return "$alarmBefore ${alarmBefore > 10 ? "دقيقة" : "دقائق"}";
     }
-    if (dropIndex == 1) {
+    if (widget.dropIndex == 1) {
       return context.watch<SettingsCubit>().state.calculationMethod;
     }
-    if (dropIndex == 2) {
+    if (widget.dropIndex == 2) {
       return context.watch<SettingsCubit>().state.timezone;
     } else {
       return context.watch<SettingsCubit>().state.asrMethod;
     }
   }
 
+  List<String> matchQuery = [];
+
+  @override
+  void initState() {
+    matchQuery = List<String>.from(widget.elements);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(
-        label,
+        widget.label,
         style: TextStyle(fontSize: 12),
       ),
       Container(
@@ -176,54 +188,130 @@ class InputDropDown extends StatelessWidget {
           child: InkWell(
             splashColor: kDeepSplashBlue,
             onTap: () {
-              Scaffold.of(scaffoldContext).showBottomSheet(
-                  (context) => Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(3)),
-                        height: 100,
-                        child: ListView.builder(
-                          itemBuilder: (context, index) {
-                            return Center(
-                              child: ListTile(
-                                visualDensity: const VisualDensity(
-                                    vertical: -4), // to compact
-                                onTap: () {
-                                  if (dropIndex == 0) {
-                                    context
-                                        .read<SettingsCubit>()
-                                        .setAlarmBefore(int.parse(
-                                            elements[index]
-                                                .replaceAll("دقائق", "")
-                                                .replaceAll("دقيقة", "")
-                                                .replaceAll(" ", "")));
-                                  }
-                                  if (dropIndex == 1) {
-                                    context
-                                        .read<SettingsCubit>()
-                                        .setCalculationMethod(elements[index]);
-                                  }
-                                  if (dropIndex == 2) {
-                                    context
-                                        .read<SettingsCubit>()
-                                        .setTimezoneMethod(elements[index]);
-                                  }
-                                  if (dropIndex == 3) {
-                                    context
-                                        .read<SettingsCubit>()
-                                        .setAsrMethod(elements[index]);
-                                  }
-                                  Navigator.pop(context);
-                                },
-                                title: Text(
-                                  elements[index],
-                                  style: const TextStyle(fontSize: 15),
+              Scaffold.of(widget.scaffoldContext).showBottomSheet(
+                  (context) =>
+                      StatefulBuilder(builder: (context, StateSetter setState) {
+                        return Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(3)),
+                          height: 100,
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                height: 50,
+                                child: TextField(
+                                  onChanged: (v) {
+                                    matchQuery.clear();
+
+                                    setState(() {
+                                      for (var element in widget.elements) {
+                                        if (element
+                                            .toLowerCase()
+                                            .contains(v.toLowerCase())) {
+                                          matchQuery.add(element);
+                                        }
+                                      }
+                                    });
+                                    print(matchQuery.length);
+                                  },
+
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                  ),
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: const Color(0xFFFFFFFF),
+                                    isDense: true,
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    /* -- Text and Icon -- */
+                                    hintText: "بحث ...",
+                                    hintStyle: const TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFFB3B1B1),
+                                    ), // TextStyle
+                                    prefixIcon: const Icon(
+                                      Icons.search,
+                                      size: 15,
+                                      color: Colors.black54,
+                                    ),
+                                    // Icon
+                                    /* -- Border Styling -- */
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(6),
+                                      borderSide: const BorderSide(
+                                        color: Color(0xFFFF0000),
+                                      ), // BorderSide
+                                    ), // OutlineInputBorder
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(6),
+                                      borderSide: const BorderSide(
+                                        color: kDeepBlue,
+                                      ), // BorderSide
+                                    ), // OutlineInputBorder
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(6),
+                                      borderSide: const BorderSide(
+                                        color: kDeepBlue,
+                                      ), // BorderSide
+                                    ), // OutlineInputBorder
+                                  ), // InputDecoration
+                                ),
+                              ), // Te
+                              Expanded(
+                                child: ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return Center(
+                                      child: ListTile(
+                                        visualDensity: const VisualDensity(
+                                            vertical: -4), // to compact
+                                        onTap: () {
+                                          if (widget.dropIndex == 0) {
+                                            context
+                                                .read<SettingsCubit>()
+                                                .setAlarmBefore(int.parse(
+                                                    matchQuery[index]
+                                                        .replaceAll("دقائق", "")
+                                                        .replaceAll("دقيقة", "")
+                                                        .replaceAll(" ", "")));
+                                          }
+                                          if (widget.dropIndex == 1) {
+                                            context
+                                                .read<SettingsCubit>()
+                                                .setCalculationMethod(
+                                                    matchQuery[index]);
+                                          }
+                                          if (widget.dropIndex == 2) {
+                                            context
+                                                .read<SettingsCubit>()
+                                                .setTimezoneMethod(
+                                                    matchQuery[index]);
+                                          }
+                                          if (widget.dropIndex == 3) {
+                                            context
+                                                .read<SettingsCubit>()
+                                                .setAsrMethod(
+                                                    matchQuery[index]);
+                                          }
+                                          Navigator.pop(context);
+                                        },
+                                        title: Text(
+                                          matchQuery[index],
+                                          style: const TextStyle(fontSize: 15),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  itemCount: matchQuery.length,
                                 ),
                               ),
-                            );
-                          },
-                          itemCount: elements.length,
-                        ),
-                      ),
+                            ],
+                          ),
+                        );
+                      }),
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10),

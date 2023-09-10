@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
 import 'package:intl/intl.dart' as ntl;
-import 'package:prayer_guard_desktop/cubits/settings_state.dart';
 import 'package:salat/salat.dart';
 
 import '../constants.dart';
@@ -25,12 +24,6 @@ class _PrayersListState extends State<PrayersList> {
       iconNormal: Colors.black,
       normal: const Color(0xffC0D1DD));
   final GeolocatorPlatform geolocatorWindows = GeolocatorPlatform.instance;
-  // final Map<String, DateTime> prayersMap = Prayers(
-  //         date: DateTime.now(),
-  //         timezone: 'Africa/Casablanca',
-  //         longitude: geolocatorWindows.getCurrentPosition().longitude,
-  //         latitude: 33)
-  //     .timesToMapAr();
 
   @override
   Widget build(BuildContext context) {
