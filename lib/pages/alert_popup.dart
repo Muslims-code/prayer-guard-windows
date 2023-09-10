@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:prayer_guard_desktop/cubits/settings_cubit.dart';
 import 'package:prayer_guard_desktop/pages/prayers_settings.dart';
 import 'dart:async';
 import 'dart:io';
@@ -9,7 +8,6 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:prayer_guard_desktop/widgets/widgets.dart';
 import '../constants.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AlertPopUp extends StatefulWidget {
   const AlertPopUp({super.key});

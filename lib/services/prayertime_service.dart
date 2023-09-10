@@ -9,6 +9,7 @@ class Prayers {
   final double _longitude;
   final double _latitude;
   final CalculationMethod _method;
+  final AsrMethod _asrMethod ;
   late DateTime fajr;
   late DateTime dhuhr;
   late DateTime asr;
@@ -20,12 +21,14 @@ class Prayers {
     required double longitude,
     required double latitude,
     CalculationMethod method = CalculationMethod.MWL,
+    AsrMethod asrMethod = AsrMethod.STANDARD,
   })  : _latitude = latitude,
         _longitude = longitude,
         _timezone = timezone,
         _method = method,
+        _asrMethod = asrMethod,
         _date = date {
-    final pt = prayerTimes(method: method);
+    final pt = prayerTimes(method: method,asr: asrMethod);
     final times = pt.calcTime(
       date: _date,
       timezone: _timezone,
@@ -41,7 +44,7 @@ class Prayers {
 
   // determines the next prayer
   Future<Map<String, DateTime>> nextPrayer() async {
-    final pt = prayerTimes(method: _method);
+    final pt = prayerTimes(method: _method,asr: _asrMethod);
     final times = pt.calcTime(
       date: _date,
       timezone: _timezone,
