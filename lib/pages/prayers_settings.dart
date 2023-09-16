@@ -1,11 +1,12 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:salat/salat.dart';
 import 'package:timezone/timezone.dart';
 import '../constants.dart';
 
-import '../cubits/settings_cubit.dart';
+import '../settings_cubit/settings_cubit.dart';
 
 class PrayersSettings extends StatefulWidget {
   const PrayersSettings({super.key});
@@ -47,8 +48,8 @@ class _PrayersSettingsState extends State<PrayersSettings> {
                     },
                   ),
                   IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
+                      onPressed: ()async {
+                        Phoenix.rebirth(context);
                       },
                       icon: Icon(
                         Icons.arrow_forward_rounded,

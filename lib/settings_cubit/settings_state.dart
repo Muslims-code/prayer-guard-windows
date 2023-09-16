@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:prayer_guard_desktop/services/prayertime_service.dart';
 
 class SettingsState extends Equatable {
   final String timezone;
@@ -9,18 +10,29 @@ class SettingsState extends Equatable {
   final String asrMethod;
   final int alarmBefore;
   final bool isAutoShutdown;
+  final Prayers? prayers;
+  final Map<String,DateTime>? nextPrayer;
 
   const SettingsState({
+    this.nextPrayer,
+    this.prayers,
     this.isAutoShutdown = false,
     this.timezone = "Africa/Casablanca",
     this.calculationMethod = "MWL",
     this.alarmBefore = 5,
-    this.asrMethod = "Standard",
+    this.asrMethod = "STANDARD",
   });
 
   @override
-  List<Object> get props =>
-      [timezone, calculationMethod, alarmBefore, asrMethod, isAutoShutdown];
+  List<Object?> get props => [
+        timezone,
+        calculationMethod,
+        alarmBefore,
+        asrMethod,
+        isAutoShutdown,
+        prayers,
+        nextPrayer
+      ];
 
   SettingsState copyWith({
     String? timezone,
@@ -28,8 +40,12 @@ class SettingsState extends Equatable {
     int? alarmBefore,
     String? asrMethod,
     bool? isAutoShutdown,
+    Prayers? prayers,
+    Map<String,DateTime>? nextPrayer,
   }) {
     return SettingsState(
+      nextPrayer: nextPrayer ?? this.nextPrayer,
+      prayers: prayers ?? this.prayers,
       isAutoShutdown: isAutoShutdown ?? this.isAutoShutdown,
       asrMethod: asrMethod ?? this.asrMethod,
       timezone: timezone ?? this.timezone,
@@ -60,5 +76,6 @@ class SettingsState extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory SettingsState.fromJson(String source) => SettingsState.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory SettingsState.fromJson(String source) =>
+      SettingsState.fromMap(json.decode(source) as Map<String, dynamic>);
 }

@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
-
-import 'cubits/settings_cubit.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'settings_cubit/settings_cubit.dart';
 import 'pages/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
@@ -16,6 +16,7 @@ Future<void> main() async {
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: path ,
   );
+
   runApp(const MyApp());
   tz.initializeTimeZones();
   doWhenWindowReady(() {
@@ -35,13 +36,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<SettingsCubit>(
-      create: (context) => SettingsCubit(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'prayer guard',
-        theme: ThemeData(useMaterial3: true, fontFamily: "Tajawal"),
-        home: const AlertPopUp(),
+    return Phoenix(
+      child: BlocProvider<SettingsCubit>(
+        lazy: false,
+        create: (context) => SettingsCubit()..initialize(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'prayer guard',
+          theme: ThemeData(useMaterial3: true, fontFamily: "Tajawal"),
+          home: const AlertPopUp(),
+        ),
       ),
     );
   }

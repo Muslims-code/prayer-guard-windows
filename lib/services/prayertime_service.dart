@@ -107,10 +107,24 @@ class Prayers {
       'العشاء': isha,
     };
   }
-}
 
-void main(List<String> args) async {
-  void sleep(DateTime first, DateTime next) async {
-    await Future.delayed(next.difference(first));
+  Prayers copyWith({
+    DateTime? date,
+    String? timezone,
+    double? longitude,
+    double? latitude,
+    CalculationMethod? method,
+    AsrMethod? asrMethod ,
+  }) {
+    return Prayers(
+      date: date ?? _date,
+      timezone: timezone ?? _timezone,
+      longitude: longitude ?? _longitude,
+      latitude: latitude ?? _latitude,
+      method: method ?? _method,
+      asrMethod: asrMethod ?? _asrMethod,
+    );
   }
 }
+
+

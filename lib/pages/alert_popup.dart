@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prayer_guard_desktop/pages/prayers_settings.dart';
+import 'package:prayer_guard_desktop/services/services.dart';
 import 'dart:async';
 import 'dart:io';
 import 'prayers_list.dart';
@@ -29,6 +30,7 @@ class _AlertPopUpState extends State<AlertPopUp> {
   void initState() {
     super.initState();
     initSystemTray();
+    
   }
 
   @override

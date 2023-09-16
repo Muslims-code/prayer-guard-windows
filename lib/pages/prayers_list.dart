@@ -1,14 +1,16 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 // ignore: depend_on_referenced_packages
 import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
 import 'package:intl/intl.dart' as ntl;
 import 'package:salat/salat.dart';
 
 import '../constants.dart';
-import '../cubits/settings_cubit.dart';
+import '../settings_cubit/settings_cubit.dart';
 import '../services/services.dart';
+import '../settings_cubit/settings_state.dart';
 
 class PrayersList extends StatefulWidget {
   const PrayersList({super.key});
@@ -27,7 +29,7 @@ class _PrayersListState extends State<PrayersList> {
 
   @override
   Widget build(BuildContext context) {
-    final settingsState = context.read<SettingsCubit>().state;
+    final state = context.watch<SettingsCubit>().state;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -35,38 +37,37 @@ class _PrayersListState extends State<PrayersList> {
         body: Stack(
           children: [
             Align(
-              alignment: Alignment.center,
-              child: SizedBox(
-                width: 200,
-                child: FutureBuilder(
-                    future: geolocatorWindows.getCurrentPosition(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        final Map<String, DateTime> prayersMap = Prayers(
-                                date: DateTime.now(),
-                                asrMethod: AsrMethod.values.firstWhere((e) => e.toString() == 'AsrMethod.${settingsState.asrMethod}'),
-                                method: CalculationMethod.values.firstWhere((e) => e.toString() == 'CalculationMethod.${settingsState.calculationMethod}'),
-                                timezone: settingsState.timezone,
-                                longitude: snapshot.data!.longitude,
-                                latitude: snapshot.data!.latitude)
-                            .timesToMapAr();
-                        return Table(
-                            border: TableBorder.all(
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(6)),
-                            defaultVerticalAlignment:
-                                TableCellVerticalAlignment.middle,
-                            children: prayersMap.entries.map((e) {
-                              String formattedTime =
-                                  "${ntl.DateFormat.Hm().format(e.value)} ";
-                              return Trow(e.key, formattedTime);
-                            }).toList());
-                      } else {
-                        return Center(child: Text("جاري التحميل... "));
-                      }
-                    }),
-              ),
-            ),
+                alignment: Alignment.center,
+                child: SizedBox(
+                  width: 200,
+                  child: Builder(builder: (context) {
+                    if (state.prayers == null) {
+                      return Center(child: Text("جاري التحميل... "));
+                    } else {
+                      return Table(
+                          border: TableBorder.all(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(6)),
+                          defaultVerticalAlignment:
+                              TableCellVerticalAlignment.middle,
+                          children: context
+                              .watch<SettingsCubit>()
+                              .state
+                              .prayers!
+                              .timesToMapAr()
+                              .entries
+                              .map((e) {
+                            String formattedTime =
+                                "${ntl.DateFormat.Hm().format(e.value)} ";
+                            return Trow(e.key, formattedTime);
+                          }).toList());
+                    }
+                  }),
+                )
+                // } else {
+                //   return Center(child: Text("جاري التحميل... "));
+                // }),
+                ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
