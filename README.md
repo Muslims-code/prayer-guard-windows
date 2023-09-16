@@ -1,14 +1,31 @@
-# Prayer guard
-The Prayer Guard is a Flutter Windows application designed to help users maintain their daily prayer routine by automatically shutting down the laptop when the time for Salat arrives. It serves as a reminder and encourages users to prioritize their spiritual practice.
+# Prayer Guard (Coming Soon)
+
+Prayer Guard is a Flutter Windows application in development, designed to assist users in maintaining their daily prayer routine. While the application is still under development, here's a sneak peek of what's to come:
 
 ## Features
-- [x] Accurate Salah Timings: The application utilizes reliable data sources to provide accurate and up-to-date timings for the five daily prayers (Fajr, Dhuhr, Asr, Maghrib, and Isha).
 
-- [ ] Customizable Prayer Reminders: Users can set their preferred prayer reminder preferences, such as an audio alert, system notification, or a visual pop-up message.
+- **Accurate Salah Timings:** Prayer Guard will provide accurate and up-to-date timings for the five daily prayers (Fajr, Dhuhr, Asr, Maghrib, and Isha).
 
-- [ ] Flexible Configuration: The application allows users to adjust the notification settings according to their preferences. They can choose the duration of the reminder before each prayer, snooze options, and whether to enable automatic laptop shutdown.
+- **Flexible Configuration:** Customize notification settings, adjust reminders, and enable automatic laptop shutdown.
 
+- **User-Friendly Interface:** Enjoy an intuitive and visually appealing user interface for a seamless experience.
 
-- [ ] User-Friendly Interface: The user interface is designed to be intuitive and visually appealing, ensuring a seamless experience for users of all levels of technical expertise.
+- **Multi-Language Support:** Choose your preferred language for the user interface and prayer-related information.
 
-- [ ]  Multi-Language Support: The application supports multiple languages, allowing users to choose their preferred language for the user interface and prayer-related information.
+- **Customized Asr Method:** Tailor the Asr calculation method to your preference.
+
+- **Automatic Geolocation Fetching:** Ensure precise prayer timings based on your current location.
+
+- **Automatic Shutdown:** Seamlessly integrate your prayer routine into your daily life with automatic laptop shutdown.
+
+## Stay Informed
+
+To stay informed about the progress of Prayer Guard, you can check our [project board](https://github.com/orgs/Muslims-code/projects/1) on GitHub. It provides a detailed view of the development status and upcoming milestones.
+
+To be among the first to try out Prayer Guard when it's released, please "Watch" this repository. You'll receive notifications about new releases and updates.
+
+## Support
+
+If you have any questions or feedback, please feel free to [open an issue](https://github.com/Muslims-code/prayer-guard-desktop/issues). Your input is invaluable in making this project a success.
+
+Thank you for your interest in Prayer Guard!
