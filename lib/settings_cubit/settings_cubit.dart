@@ -82,6 +82,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
 
   Future<void> shutDownOnPrayer() async {
     while (state.isAutoShutdown) {
+      await updateNextPrayer();
       final DateTime now = DateTime.now();
       final sleepDuration = state.nextPrayer!.values.first.difference(now);
       await Future.delayed(sleepDuration);
@@ -92,7 +93,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
 
   void updateMinutesUntilNextPrayer() async {
     while (true) {
-      updateNextPrayer();
+      await updateNextPrayer();
       final DateTime now = DateTime.now();
       final minutesUntilNextPrayer =
           state.nextPrayer!.values.first.difference(now);
