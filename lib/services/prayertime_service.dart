@@ -60,7 +60,7 @@ class Prayers {
       else if (now
           .isAfter(prayersList.elementAt(prayersList.length - 1).$2.value)) {
         final entry = prayersList.elementAt(0).$2;
-        next = {entry.key: entry.value};
+        next = {entry.key: entry.value.add(const Duration(days: 1))};
 
         break;
       }

@@ -57,9 +57,9 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
   void initialize() async {
     await setPrayers();
     await updateNextPrayer();
+    alarm();
     updateMinutesUntilNextPrayer();
     shutDownOnPrayer();
-    alarm();
   }
 
   Future<void> alarm() async {
@@ -75,23 +75,27 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
   }
 
   Future<void> updateNextPrayer() async {
-    state.prayers!.nextPrayer().then((value) {
-      emit(state.copyWith(nextPrayer: value));
-    });
+    await setPrayers();
+    final pr = await state.prayers!.nextPrayer();
+    emit(state.copyWith(nextPrayer: pr));
   }
 
   Future<void> shutDownOnPrayer() async {
     while (state.isAutoShutdown) {
       await updateNextPrayer();
       final DateTime now = DateTime.now();
-      final sleepDuration = state.nextPrayer!.values.first.difference(now);
-      await Future.delayed(sleepDuration);
-      await Process.run(
-          'rundll32.exe', ['powrprof.dll,SetSuspendState', 'Sleep']);
+      if (state.nextPrayer!.values.first.isAfter(now)) {
+        final sleepDuration = state.nextPrayer!.values.first.difference(now);
+        await Future.delayed(sleepDuration);
+        await Process.run(
+            'rundll32.exe', ['powrprof.dll,SetSuspendState', 'Sleep']);
+      } else {
+        await Future.delayed(Duration(seconds: 10));
+      }
     }
   }
 
-  void updateMinutesUntilNextPrayer() async {
+  Future<void> updateMinutesUntilNextPrayer() async {
     while (true) {
       await updateNextPrayer();
       final DateTime now = DateTime.now();
