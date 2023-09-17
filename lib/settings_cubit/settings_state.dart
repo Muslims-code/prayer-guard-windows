@@ -1,8 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
-import 'package:prayer_guard_desktop/services/prayertime_service.dart';
+import 'package:prayer_guard_desktop/services/services.dart';
 
 class SettingsState extends Equatable {
   final String timezone;
@@ -11,7 +10,7 @@ class SettingsState extends Equatable {
   final int alarmBefore;
   final bool isAutoShutdown;
   final Prayers? prayers;
-  final Map<String,DateTime>? nextPrayer;
+  final Map<String, DateTime>? nextPrayer;
   final Duration? minutesUntilNextPrayer;
 
   const SettingsState({
@@ -45,10 +44,11 @@ class SettingsState extends Equatable {
     bool? isAutoShutdown,
     Prayers? prayers,
     Duration? minutesUntilNextPrayer,
-    Map<String,DateTime>? nextPrayer,
+    Map<String, DateTime>? nextPrayer,
   }) {
     return SettingsState(
-      minutesUntilNextPrayer: minutesUntilNextPrayer ?? this.minutesUntilNextPrayer,
+      minutesUntilNextPrayer:
+          minutesUntilNextPrayer ?? this.minutesUntilNextPrayer,
       nextPrayer: nextPrayer ?? this.nextPrayer,
       prayers: prayers ?? this.prayers,
       isAutoShutdown: isAutoShutdown ?? this.isAutoShutdown,

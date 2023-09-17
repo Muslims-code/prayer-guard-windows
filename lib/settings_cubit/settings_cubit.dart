@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:io';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:prayer_guard_desktop/settings_cubit/settings_state.dart';
+import 'package:prayer_guard_desktop/settings_cubit/settings.dart';
+// ignore: depend_on_referenced_packages
 import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
 import 'package:salat/salat.dart';
-import 'package:system_tray/system_tray.dart';
 
 import '../services/services.dart';
 

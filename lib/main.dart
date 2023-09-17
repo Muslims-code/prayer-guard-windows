@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'settings_cubit/settings_cubit.dart';
+import 'settings_cubit/settings.dart';
 import 'pages/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
@@ -12,9 +12,10 @@ import 'package:timezone/data/latest.dart' as tz;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final path = Directory((await getApplicationDocumentsDirectory()).path + "/prayer_guard");
+  final path = Directory(
+      "${(await getApplicationDocumentsDirectory()).path}/prayer_guard");
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: path ,
+    storageDirectory: path,
   );
 
   runApp(const MyApp());
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'prayer guard',
           theme: ThemeData(useMaterial3: true, fontFamily: "Tajawal"),
-          home: const AlertPopUp(),
+          home: const MainPage(),
         ),
       ),
     );

@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:prayer_guard_desktop/pages/prayers_settings.dart';
-import 'package:prayer_guard_desktop/services/services.dart';
+import 'package:prayer_guard_desktop/pages/pages.dart';
 import 'dart:async';
 import 'dart:io';
-import '../settings_cubit/settings_cubit.dart';
-import '../settings_cubit/settings_state.dart';
-import 'prayers_list.dart';
+import 'package:prayer_guard_desktop/settings_cubit/settings.dart';
 import 'package:system_tray/system_tray.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:prayer_guard_desktop/widgets/widgets.dart';
 import '../constants.dart';
 
-class AlertPopUp extends StatefulWidget {
-  const AlertPopUp({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
   @override
-  State<AlertPopUp> createState() => _AlertPopUpState();
+  State<MainPage> createState() => _MainPageState();
 }
 
 String getTrayImagePath(String imageName) {
   return Platform.isWindows ? 'assets/$imageName.ico' : 'assets/$imageName.png';
 }
 
-class _AlertPopUpState extends State<AlertPopUp> {
+class _MainPageState extends State<MainPage> {
   final AppWindow _appWindow = AppWindow();
   final SystemTray _systemTray = SystemTray();
   final Menu _menuMain = Menu();
@@ -71,7 +68,6 @@ class _AlertPopUpState extends State<AlertPopUp> {
         backgroundColor: kShallowBlue,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -97,7 +93,7 @@ class _AlertPopUpState extends State<AlertPopUp> {
                     "$minutesUntilNextPrayer ${minutesUntilNextPrayer > 10 ? "دقيقة" : "دقائق"}";
                 return Text(
                   "موعد صلاة ${state.nextPrayer!.keys.first} بعد $mins استعد لتأديتها، توضأ و تأهب لملاقاة ربك",
-                  style: TextStyle(fontSize: 20, color: kDeepBlue),
+                  style: const TextStyle(fontSize: 20, color: kDeepBlue),
                 );
               }),
             ),
@@ -107,8 +103,9 @@ class _AlertPopUpState extends State<AlertPopUp> {
                 children: [
                   GreenButton(
                     text: 'إيقاف تشغيل الكمبيوتر',
-                    onPressed: () async{
-                      await Process.run('rundll32.exe', ['powrprof.dll,SetSuspendState', 'Sleep']);
+                    onPressed: () async {
+                      await Process.run('rundll32.exe',
+                          ['powrprof.dll,SetSuspendState', 'Sleep']);
                     },
                   ),
                   BlueIconButton(
@@ -128,7 +125,7 @@ class _AlertPopUpState extends State<AlertPopUp> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => PrayersSettings()));
+                              builder: (context) => const PrayersSettings()));
                     },
                   ),
                 ],

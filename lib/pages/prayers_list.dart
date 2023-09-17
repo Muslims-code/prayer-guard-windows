@@ -1,13 +1,10 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// ignore: depend_on_referenced_packages
-import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
 import 'package:intl/intl.dart' as ntl;
 
-import '../constants.dart';
-import '../settings_cubit/settings_cubit.dart';
-
+import 'package:prayer_guard_desktop/constants.dart';
+import 'package:prayer_guard_desktop/settings_cubit/settings.dart';
 
 class PrayersList extends StatefulWidget {
   const PrayersList({super.key});
@@ -22,7 +19,6 @@ class _PrayersListState extends State<PrayersList> {
       mouseDown: const Color(0xFFB71C1C),
       iconNormal: Colors.black,
       normal: const Color(0xffC0D1DD));
-  final GeolocatorPlatform geolocatorWindows = GeolocatorPlatform.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +35,7 @@ class _PrayersListState extends State<PrayersList> {
                   width: 200,
                   child: Builder(builder: (context) {
                     if (state.prayers == null) {
-                      return Center(child: Text("جاري التحميل... "));
+                      return const Center(child: Text("جاري التحميل... "));
                     } else {
                       return Table(
                           border: TableBorder.all(
@@ -60,8 +56,7 @@ class _PrayersListState extends State<PrayersList> {
                           }).toList());
                     }
                   }),
-                )
-                ),
+                )),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,10 +93,10 @@ class _PrayersListState extends State<PrayersList> {
             verticalAlignment: TableCellVerticalAlignment.top,
             child: Center(
                 child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 3, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 20),
               child: Text(
                 text1,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                 ),
               ),
@@ -110,10 +105,10 @@ class _PrayersListState extends State<PrayersList> {
           TableCell(
             child: Center(
                 child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 3, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 20),
               child: Text(
                 text2,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                 ),
               ),

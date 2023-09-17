@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:salat/salat.dart';
 import 'package:timezone/timezone.dart';
-import '../constants.dart';
 
-import '../settings_cubit/settings_cubit.dart';
+import 'package:prayer_guard_desktop/constants.dart';
+import 'package:prayer_guard_desktop/settings_cubit/settings.dart';
 
 class PrayersSettings extends StatefulWidget {
   const PrayersSettings({super.key});
@@ -48,10 +48,10 @@ class _PrayersSettingsState extends State<PrayersSettings> {
                     },
                   ),
                   IconButton(
-                      onPressed: ()async {
+                      onPressed: () async {
                         Phoenix.rebirth(context);
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.arrow_forward_rounded,
                       )),
                 ],
@@ -118,9 +118,9 @@ class _PrayersSettingsState extends State<PrayersSettings> {
                     onChanged: (v) {
                       context.read<SettingsCubit>().setIsAutoShutdown(v!);
                     }),
-                Text(
+                const Text(
                   "تفعيل الإيقاف التلقائي للحاسوب",
-                  style: const TextStyle(fontSize: 12),
+                  style: TextStyle(fontSize: 12),
                 ),
               ])
             ],
@@ -136,7 +136,7 @@ class InputDropDown extends StatefulWidget {
   final String label;
   final List<String> elements;
   final int dropIndex;
-  InputDropDown({
+  const InputDropDown({
     super.key,
     required this.label,
     required this.dropIndex,
@@ -177,7 +177,7 @@ class _InputDropDownState extends State<InputDropDown> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(
         widget.label,
-        style: TextStyle(fontSize: 12),
+        style: const TextStyle(fontSize: 12),
       ),
       Container(
         height: 20,
