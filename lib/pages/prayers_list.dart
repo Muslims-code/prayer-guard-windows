@@ -1,16 +1,13 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 // ignore: depend_on_referenced_packages
 import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
 import 'package:intl/intl.dart' as ntl;
-import 'package:salat/salat.dart';
 
 import '../constants.dart';
 import '../settings_cubit/settings_cubit.dart';
-import '../services/services.dart';
-import '../settings_cubit/settings_state.dart';
+
 
 class PrayersList extends StatefulWidget {
   const PrayersList({super.key});
@@ -41,7 +38,7 @@ class _PrayersListState extends State<PrayersList> {
                 child: SizedBox(
                   width: 200,
                   child: Builder(builder: (context) {
-                    if (state.prayers != null) {
+                    if (state.prayers == null) {
                       return Center(child: Text("جاري التحميل... "));
                     } else {
                       return Table(
@@ -64,9 +61,6 @@ class _PrayersListState extends State<PrayersList> {
                     }
                   }),
                 )
-                // } else {
-                //   return Center(child: Text("جاري التحميل... "));
-                // }),
                 ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

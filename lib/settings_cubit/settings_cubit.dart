@@ -51,6 +51,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
       longitude: position.longitude,
       latitude: position.latitude,
     )));
+    updateNextPrayer();
   }
 
   void initialize() async {
@@ -84,7 +85,8 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
       final DateTime now = DateTime.now();
       final sleepDuration = state.nextPrayer!.values.first.difference(now);
       await Future.delayed(sleepDuration);
-      await Process.run('rundll32.exe', ['powrprof.dll,SetSuspendState', 'Sleep']);
+      await Process.run(
+          'rundll32.exe', ['powrprof.dll,SetSuspendState', 'Sleep']);
     }
   }
 
