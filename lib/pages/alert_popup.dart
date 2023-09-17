@@ -107,7 +107,9 @@ class _AlertPopUpState extends State<AlertPopUp> {
                 children: [
                   GreenButton(
                     text: 'إيقاف تشغيل الكمبيوتر',
-                    onPressed: () {},
+                    onPressed: () async{
+                      await Process.run('rundll32.exe', ['powrprof.dll,SetSuspendState', 'Sleep']);
+                    },
                   ),
                   BlueIconButton(
                     icon: Icons.list,

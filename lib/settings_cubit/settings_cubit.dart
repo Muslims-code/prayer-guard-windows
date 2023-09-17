@@ -84,7 +84,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
       final DateTime now = DateTime.now();
       final sleepDuration = state.nextPrayer!.values.first.difference(now);
       await Future.delayed(sleepDuration);
-      //! shutdown logic here
+      await Process.run('rundll32.exe', ['powrprof.dll,SetSuspendState', 'Sleep']);
     }
   }
 
