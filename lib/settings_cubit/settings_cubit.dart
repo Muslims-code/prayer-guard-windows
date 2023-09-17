@@ -1,9 +1,10 @@
 import 'dart:async';
-
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:prayer_guard_desktop/settings_cubit/settings_state.dart';
 import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
 import 'package:salat/salat.dart';
+import 'package:system_tray/system_tray.dart';
 
 import '../services/services.dart';
 
@@ -54,7 +55,20 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
   void initialize() async {
     await setPrayers();
     await updateNextPrayer();
-    await shutDownOnPrayer();
+    shutDownOnPrayer();
+    alarm();
+  }
+
+  Future<void> alarm() async {
+    while (true) {
+      final DateTime now = DateTime.now() ;
+      final nextPrayer = state.nextPrayer!.values.first
+          .subtract(Duration(minutes: state.alarmBefore));
+      final sleepDuration = nextPrayer.difference(now);
+      await Future.delayed(sleepDuration);
+      appWindow.show();
+      await Future.delayed(Duration(minutes: state.alarmBefore));
+    }
   }
 
   Future<void> updateNextPrayer() async {
@@ -65,8 +79,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
 
   Future<void> shutDownOnPrayer() async {
     while (state.isAutoShutdown) {
-    print(state.nextPrayer!.keys.first);
-      final DateTime now = DateTime.now() ;
+      final DateTime now = DateTime.now();
       final sleepDuration = state.nextPrayer!.values.first.difference(now);
       await Future.delayed(sleepDuration);
       //! shutdown logic here
