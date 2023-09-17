@@ -92,6 +92,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
 
   void updateMinutesUntilNextPrayer() async {
     while (true) {
+      updateNextPrayer();
       final DateTime now = DateTime.now();
       final minutesUntilNextPrayer =
           state.nextPrayer!.values.first.difference(now);

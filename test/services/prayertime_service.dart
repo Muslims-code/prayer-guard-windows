@@ -17,5 +17,4 @@ void main() async {
   // given a date determine the next prayer ...
   final next = await prayers.nextPrayer();
   printPrayerTimes(prayers.timesToMap());
-  print(next);
 }

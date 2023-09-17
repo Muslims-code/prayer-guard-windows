@@ -38,12 +38,12 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future<void> initSystemTray() async {
-    await _systemTray.initSystemTray(iconPath: getTrayImagePath('app_icon'));
+    await _systemTray.initSystemTray(iconPath: getTrayImagePath('prayer_guard_logo'));
     _systemTray.setTitle("Prayer Guard");
     _systemTray.setToolTip("protecting your prayers...");
 
     _systemTray.registerSystemTrayEventHandler((eventName) {
-      debugPrint("eventName: $eventName");
+      // debugPrint("eventName: $eventName");
       if (eventName == kSystemTrayEventClick) {
         Platform.isWindows ? _appWindow.show() : _systemTray.popUpContextMenu();
       } else if (eventName == kSystemTrayEventRightClick) {

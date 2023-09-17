@@ -214,7 +214,6 @@ class _InputDropDownState extends State<InputDropDown> {
                                         }
                                       }
                                     });
-                                    print(matchQuery.length);
                                   },
 
                                   style: const TextStyle(
