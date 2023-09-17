@@ -9,7 +9,7 @@ class Prayers {
   final double _longitude;
   final double _latitude;
   final CalculationMethod _method;
-  final AsrMethod _asrMethod ;
+  final AsrMethod _asrMethod;
   late DateTime fajr;
   late DateTime dhuhr;
   late DateTime asr;
@@ -28,7 +28,7 @@ class Prayers {
         _method = method,
         _asrMethod = asrMethod,
         _date = date {
-    final pt = prayerTimes(method: method,asr: asrMethod);
+    final pt = prayerTimes(method: method, asr: asrMethod);
     final times = pt.calcTime(
       date: _date,
       timezone: _timezone,
@@ -43,15 +43,10 @@ class Prayers {
   }
 
   // determines the next prayer
-  Future<Map<String, DateTime>> nextPrayer() async {
-    final pt = prayerTimes(method: _method,asr: _asrMethod);
-    final times = pt.calcTime(
-      date: _date,
-      timezone: _timezone,
-      longitude: _longitude,
-      latitude: _latitude,
-    );
-    final prayersList = times.entries.indexed;
+  Future<Map<String, DateTime>> nextPrayer({bool isArabic = true}) async {
+    final prayersList = isArabic
+        ? timesToMapAr().entries.toList().indexed
+        : timesToMap().entries.toList().indexed;
     Map<String, DateTime> next = {};
     DateTime now = _date;
     for (int i = 0; i < prayersList.length; i++) {
@@ -98,7 +93,8 @@ class Prayers {
       'isha': isha,
     };
   }
-    Map<String, DateTime> timesToMapAr() {
+
+  Map<String, DateTime> timesToMapAr() {
     return <String, DateTime>{
       'الفجر': fajr,
       'الظهر': dhuhr,
@@ -114,7 +110,7 @@ class Prayers {
     double? longitude,
     double? latitude,
     CalculationMethod? method,
-    AsrMethod? asrMethod ,
+    AsrMethod? asrMethod,
   }) {
     return Prayers(
       date: date ?? _date,
@@ -126,5 +122,3 @@ class Prayers {
     );
   }
 }
-
-

@@ -12,8 +12,10 @@ class SettingsState extends Equatable {
   final bool isAutoShutdown;
   final Prayers? prayers;
   final Map<String,DateTime>? nextPrayer;
+  final Duration? minutesUntilNextPrayer;
 
   const SettingsState({
+    this.minutesUntilNextPrayer,
     this.nextPrayer,
     this.prayers,
     this.isAutoShutdown = false,
@@ -31,7 +33,8 @@ class SettingsState extends Equatable {
         asrMethod,
         isAutoShutdown,
         prayers,
-        nextPrayer
+        nextPrayer,
+        minutesUntilNextPrayer
       ];
 
   SettingsState copyWith({
@@ -41,9 +44,11 @@ class SettingsState extends Equatable {
     String? asrMethod,
     bool? isAutoShutdown,
     Prayers? prayers,
+    Duration? minutesUntilNextPrayer,
     Map<String,DateTime>? nextPrayer,
   }) {
     return SettingsState(
+      minutesUntilNextPrayer: minutesUntilNextPrayer ?? this.minutesUntilNextPrayer,
       nextPrayer: nextPrayer ?? this.nextPrayer,
       prayers: prayers ?? this.prayers,
       isAutoShutdown: isAutoShutdown ?? this.isAutoShutdown,

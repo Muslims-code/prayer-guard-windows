@@ -41,7 +41,7 @@ class _PrayersListState extends State<PrayersList> {
                 child: SizedBox(
                   width: 200,
                   child: Builder(builder: (context) {
-                    if (state.prayers == null) {
+                    if (state.prayers != null) {
                       return Center(child: Text("جاري التحميل... "));
                     } else {
                       return Table(

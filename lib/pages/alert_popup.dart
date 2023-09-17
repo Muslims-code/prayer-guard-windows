@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prayer_guard_desktop/pages/prayers_settings.dart';
 import 'package:prayer_guard_desktop/services/services.dart';
 import 'dart:async';
 import 'dart:io';
+import '../settings_cubit/settings_cubit.dart';
+import '../settings_cubit/settings_state.dart';
 import 'prayers_list.dart';
 import 'package:system_tray/system_tray.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
@@ -30,7 +33,6 @@ class _AlertPopUpState extends State<AlertPopUp> {
   void initState() {
     super.initState();
     initSystemTray();
-    
   }
 
   @override
@@ -69,10 +71,10 @@ class _AlertPopUpState extends State<AlertPopUp> {
         backgroundColor: kShallowBlue,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              
               children: [
                 CloseWindowButton(
                   colors: closeButtonColors,
@@ -83,40 +85,52 @@ class _AlertPopUpState extends State<AlertPopUp> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.all(12),
-              child: Text(
-                "موعد صلاة العشاء بعد 5 دقائق استعد لتأديتها، توضأ و تأهب لملاقاة ربك",
-                style: TextStyle(fontSize: 20, color: kDeepBlue),
-              ),
+              padding: const EdgeInsets.all(5),
+              child: BlocBuilder<SettingsCubit, SettingsState>(
+                  builder: (context, state) {
+                if (state.minutesUntilNextPrayer == null) {
+                  return const Center(child: Text("جاري التحميل... "));
+                }
+                final minutesUntilNextPrayer =
+                    state.minutesUntilNextPrayer!.inMinutes;
+                final mins =
+                    "$minutesUntilNextPrayer ${minutesUntilNextPrayer > 10 ? "دقيقة" : "دقائق"}";
+                return Text(
+                  "موعد صلاة ${state.nextPrayer!.keys.first} بعد $mins استعد لتأديتها، توضأ و تأهب لملاقاة ربك",
+                  style: TextStyle(fontSize: 20, color: kDeepBlue),
+                );
+              }),
             ),
-            Row(
-              children: [
-                GreenButton(
-                  text: 'إيقاف تشغيل الكمبيوتر',
-                  onPressed: () {},
-                ),
-                BlueIconButton(
-                  icon: Icons.list,
-                  text: "الصلوات",
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => const PrayersList()));
-                  },
-                ),
-                BlueIconButton(
-                  icon: Icons.settings,
-                  text: "الإعدادات",
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) =>
-                                 PrayersSettings()));
-                  },
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: Row(
+                children: [
+                  GreenButton(
+                    text: 'إيقاف تشغيل الكمبيوتر',
+                    onPressed: () {},
+                  ),
+                  BlueIconButton(
+                    icon: Icons.list,
+                    text: "الصلوات",
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => const PrayersList()));
+                    },
+                  ),
+                  BlueIconButton(
+                    icon: Icons.settings,
+                    text: "الإعدادات",
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => PrayersSettings()));
+                    },
+                  ),
+                ],
+              ),
             )
           ],
         ),

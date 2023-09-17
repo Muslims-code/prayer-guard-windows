@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:prayer_guard_desktop/settings_cubit/settings_state.dart';
@@ -55,13 +56,14 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
   void initialize() async {
     await setPrayers();
     await updateNextPrayer();
+    updateMinutesUntilNextPrayer();
     shutDownOnPrayer();
     alarm();
   }
 
   Future<void> alarm() async {
     while (true) {
-      final DateTime now = DateTime.now() ;
+      final DateTime now = DateTime.now();
       final nextPrayer = state.nextPrayer!.values.first
           .subtract(Duration(minutes: state.alarmBefore));
       final sleepDuration = nextPrayer.difference(now);
@@ -83,6 +85,16 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
       final sleepDuration = state.nextPrayer!.values.first.difference(now);
       await Future.delayed(sleepDuration);
       //! shutdown logic here
+    }
+  }
+
+  void updateMinutesUntilNextPrayer() async {
+    while (true) {
+      final DateTime now = DateTime.now();
+      final minutesUntilNextPrayer =
+          state.nextPrayer!.values.first.difference(now);
+      emit(state.copyWith(minutesUntilNextPrayer: minutesUntilNextPrayer));
+      await Future.delayed(const Duration(minutes: 1));
     }
   }
 
