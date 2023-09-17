@@ -9,9 +9,20 @@ import 'pages/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:launch_at_startup/launch_at_startup.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+  launchAtStartup.setup(
+    appName: packageInfo.appName,
+    appPath: Platform.resolvedExecutable,
+  );
+
+  
+  await launchAtStartup.enable();
   final path = Directory(
       "${(await getApplicationDocumentsDirectory()).path}/prayer_guard");
   HydratedBloc.storage = await HydratedStorage.build(
