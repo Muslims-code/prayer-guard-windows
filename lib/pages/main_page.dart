@@ -32,10 +32,6 @@ class _MainPageState extends State<MainPage> {
     initSystemTray();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   Future<void> initSystemTray() async {
     await _systemTray.initSystemTray(iconPath: getTrayImagePath('prayer_guard_logo'));
@@ -83,6 +79,7 @@ class _MainPageState extends State<MainPage> {
             Padding(
               padding: const EdgeInsets.all(5),
               child: BlocBuilder<SettingsCubit, SettingsState>(
+                
                   builder: (context, state) {
                 if (state.minutesUntilNextPrayer == null) {
                   return const Center(child: Text("جاري التحميل... "));

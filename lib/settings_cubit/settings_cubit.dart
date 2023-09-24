@@ -24,17 +24,14 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
 
   void setAlarmBefore(int alarmBefore) {
     emit(state.copyWith(alarmBefore: alarmBefore));
-    setPrayers();
   }
 
   void setAsrMethod(String asrMethod) {
     emit(state.copyWith(asrMethod: asrMethod));
-    setPrayers();
   }
 
   void setIsAutoShutdown(bool isAutoShutdown) {
     emit(state.copyWith(isAutoShutdown: isAutoShutdown));
-    setPrayers();
   }
 
   Future<void> setPrayers() async {
@@ -51,7 +48,6 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
       longitude: position.longitude,
       latitude: position.latitude,
     )));
-    updateNextPrayer();
   }
 
   void initialize() async {
@@ -81,29 +77,36 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
   }
 
   Future<void> shutDownOnPrayer() async {
-    while (state.isAutoShutdown) {
+    while (true) {
       await updateNextPrayer();
       final DateTime now = DateTime.now();
       if (state.nextPrayer!.values.first.isAfter(now)) {
         final sleepDuration = state.nextPrayer!.values.first.difference(now);
-        await Future.delayed(sleepDuration);
-        await Process.run(
-            'rundll32.exe', ['powrprof.dll,SetSuspendState', 'Sleep']);
+        if (state.isAutoShutdown) {
+          await Future.delayed(sleepDuration);
+          await Process.run(
+              'rundll32.exe', ['powrprof.dll,SetSuspendState', 'Sleep']);
+        } else {
+          await Future.delayed(sleepDuration);
+        }
       } else {
-        await Future.delayed(Duration(seconds: 10));
+        await Future.delayed(const Duration(seconds: 10));
       }
     }
   }
 
-  Future<void> updateMinutesUntilNextPrayer() async {
-    while (true) {
-      await updateNextPrayer();
+  void updateMinutesUntilNextPrayer()async {
+    final DateTime now = DateTime.now();
+    final minutesUntilNextPrayer =
+        state.nextPrayer!.values.first.difference(now);
+    emit(state.copyWith(minutesUntilNextPrayer: minutesUntilNextPrayer));
+
+     Timer.periodic(const Duration(minutes: 1), (timer) async{
       final DateTime now = DateTime.now();
-      final minutesUntilNextPrayer =
+      var minutesUntilNextPrayer =
           state.nextPrayer!.values.first.difference(now);
       emit(state.copyWith(minutesUntilNextPrayer: minutesUntilNextPrayer));
-      await Future.delayed(const Duration(minutes: 1));
-    }
+    });
   }
 
   @override
